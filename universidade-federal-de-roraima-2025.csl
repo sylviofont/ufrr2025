@@ -13,7 +13,7 @@
     <category citation-format="author-date"/>
     <category field="social_science"/>
     <summary>Estilo oficial da UFRR conforme o Manual de Normas 3ª ed. (2025). Regras de capitalização mista em citações e listagem integral de autores na bibliografia.</summary>
-    <updated>2026-04-16T18:00:00+00:00</updated>
+    <updated>2026-04-20T15:00:00+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="pt-BR">
@@ -84,9 +84,19 @@
   <macro name="issued">
     <choose>
       <if variable="issued">
-        <date variable="issued">
-          <date-part name="year"/>
-        </date>
+        <choose>
+          <if type="article-journal article-magazine article-newspaper" match="any">
+            <date variable="issued">
+              <date-part name="month" form="short" suffix=" "/>
+              <date-part name="year"/>
+            </date>
+          </if>
+          <else>
+            <date variable="issued">
+              <date-part name="year"/>
+            </date>
+          </else>
+        </choose>
       </if>
       <else>
         <text term="no date" form="short"/>
@@ -177,8 +187,10 @@
                 </names>
               </group>
               <text macro="container-title"/>
-              <text macro="publisher"/>
-              <text macro="issued"/>
+              <group delimiter=", ">
+                <text macro="publisher"/>
+                <text macro="issued"/>
+              </group>
               <group delimiter=" ">
                 <label variable="page" form="short"/>
                 <text variable="page"/>
@@ -187,19 +199,27 @@
           </else-if>
           <else-if type="thesis" match="any">
             <group delimiter=". ">
-              <text macro="issued"/>
+              <group delimiter=", ">
+                <text macro="publisher"/>
+                <text macro="issued"/>
+              </group>
               <group delimiter=" ">
                 <text variable="number-of-pages"/>
                 <label variable="number-of-pages" form="short"/>
               </group>
               <text variable="genre"/>
-              <text variable="publisher"/>
               <text variable="publisher-place"/>
             </group>
           </else-if>
           <else>
-            <text macro="publisher"/>
-            <text macro="issued"/>
+            <group delimiter=", ">
+              <text macro="publisher"/>
+              <text macro="issued"/>
+            </group>
+            <group delimiter=" ">
+              <text variable="number-of-pages"/>
+              <label variable="number-of-pages" form="short"/>
+            </group>
           </else>
         </choose>
       </group>
